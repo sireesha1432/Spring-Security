@@ -1,18 +1,23 @@
 package com.SecurityExample.Model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
 @Entity
 @Data
 public class Users {
-     
+
 	@Id
-	private Integer idInteger;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 	private String userName;
 	private String password;
-	
-	
-	
+	@Enumerated(EnumType.STRING)
+	private Role role;
+
 }

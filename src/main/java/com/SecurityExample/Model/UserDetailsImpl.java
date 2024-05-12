@@ -1,24 +1,23 @@
 package com.SecurityExample.Model;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserDetailsImpl implements UserDetails{
+public class UserDetailsImpl implements UserDetails {
 
-	
 	private Users users;
-	 public UserDetailsImpl(Users users) {
-		this.users=users;
+
+	public UserDetailsImpl(Users users) {
+		this.users = users;
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return Collections.singleton(new SimpleGrantedAuthority("user"));
+		return List.of(new SimpleGrantedAuthority(users.getRole().name()));
 	}
 
 	@Override
