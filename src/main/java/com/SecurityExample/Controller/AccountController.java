@@ -55,11 +55,16 @@ public class AccountController {
 
 	}
 
-	@PostMapping("/login")
+	@PostMapping("/Login")
 	public String login(@RequestBody Users user) {
 		Authentication authentication = authenticationManger
 				.authenticate(new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
-		return "succuss";
+		if (authentication.isAuthenticated()) {
+			return "succes";
+		}
+		else {
+			return "failed";
+		}
 
 	}
 

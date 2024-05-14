@@ -33,8 +33,8 @@ public class SecurityConfig {
 
 		httpSecurity.csrf(Customizer -> Customizer.disable());
 		httpSecurity.formLogin(Customizer.withDefaults());
-		httpSecurity.authorizeHttpRequests(
-				request -> request.requestMatchers("/register","/login").permitAll().anyRequest().authenticated());
+		httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/register", "/Login", "/Contact")
+				.permitAll().anyRequest().authenticated());
 		httpSecurity.formLogin(Customizer.withDefaults());
 		return httpSecurity.build();
 	}
@@ -48,12 +48,11 @@ public class SecurityConfig {
 		return provider;
 
 	}
-	
-		
-	@Bean 
+
+	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 		return configuration.getAuthenticationManager();
-		
+
 	}
-	
+
 }
