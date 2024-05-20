@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Configuration
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SecurityConfig {
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private JWTFilter jwtFilter;
 
 	@Bean
 	SecurityFilterChain defauSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -36,8 +40,24 @@ public class SecurityConfig {
 		httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/register", "/Login", "/Contact")
 				.permitAll().anyRequest().authenticated());
 		httpSecurity.formLogin(Customizer.withDefaults());
+		httpSecurity.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
 		return httpSecurity.build();
 	}
+    
+	/*
+	 * Authentication manger 
+	 * used to Authenticate using Authrntication Object (From Username&PasswordAuthentication Method())
+	 */	
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+		return configuration.getAuthenticationManager();
+	}
+	
+	/*  
+	 * Authentocation provider
+	 * used to provide the user Credentials from DB.
+	 * Usig UserdetailsService Method  it is implementing user object (userIMPL CLASS)
+	 */
 
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
@@ -48,11 +68,7 @@ public class SecurityConfig {
 		return provider;
 
 	}
-
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-		return configuration.getAuthenticationManager();
-
-	}
+	
+	
 
 }

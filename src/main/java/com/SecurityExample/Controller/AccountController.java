@@ -26,6 +26,9 @@ public class AccountController {
 
 	@Autowired
 	private myUserService myUserService;
+	
+	@Autowired
+	JWTService jwtService;
 
 	@Autowired
 	private AuthenticationManager authenticationManger;
@@ -60,7 +63,7 @@ public class AccountController {
 		Authentication authentication = authenticationManger
 				.authenticate(new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
 		if (authentication.isAuthenticated()) {
-			return "succes";
+			return jwtService.generateToken(user.getUserName());
 		}
 		else {
 			return "failed";
